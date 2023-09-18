@@ -14,7 +14,7 @@ export default defineConfig({
     base: './', // 默认是绝对路径改为相对路径
     resolve: {
       alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url))
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
       }
-    }
+    },
 })

@@ -12,7 +12,6 @@ app.whenReady().then( ()=> {
             webSecurity: false, // 关闭跨域检测
         }
     })
-    win.webContents.openDevTools()
     if(process.argv[2]) {
         win.loadURL(process.argv[2])
     } else {
