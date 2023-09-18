@@ -1,5 +1,15 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
+import {ipcRenderer} from 'electron'
+// window.ipcRenderer = ipcRenderer
+//
+// // import { app , shell } from 'electron'
+// // shell.openPath(`${app.getAppPath()}`)
+//
+function submit() {
+  ipcRenderer.send("submit", "打开资源管理器")
+}
+
 </script>
 
 <template>
@@ -12,6 +22,7 @@ import HelloWorld from './components/HelloWorld.vue'
     </a>
   </div>
   <HelloWorld msg="Vite + Vue" />
+  <button @click="submit">test open file</button>
 </template>
 
 <style scoped>
