@@ -1,5 +1,4 @@
 <script setup lang="ts">
-console.log(import.meta.env.VITE_API)
 </script>
 
 <template>

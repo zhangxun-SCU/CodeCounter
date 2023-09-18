@@ -6,10 +6,5 @@
 </template>
 
 <style scoped>
-  h1 {
-    width: fit-content;
-    height: fit-content;
-    color: deepskyblue;
-    background-color: aquamarine;
-  }
+
 </style>
