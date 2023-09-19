@@ -13,10 +13,16 @@ function send() {
 </script>
 
 <template>
-<button @click="send">选择文件夹</button>
-  <span id="message"></span>
+  <div class="container">
+    <button @click="send">选择文件夹</button>
+    <span id="message"></span>
+  </div>
 </template>
 
 <style scoped>
-
+.container {
+  width: 100vw;
+  height: 80vh;
+  background-color: darkgray;
+}
 </style>

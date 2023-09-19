@@ -4,10 +4,6 @@ project(codeCounter)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(codeCounter main.cpp
-        getFileNames.h
-        getFileNames.cpp
-        codeCount.cpp
-        codeCount.h
         CodeCounter.cpp
         CodeCounter.h
         str.cpp
