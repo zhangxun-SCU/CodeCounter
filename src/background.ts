@@ -15,24 +15,35 @@ app.whenReady().then( ()=> {
             contextIsolation: false,
             webSecurity: false, // 关闭跨域检测,
         }
-    })
+    });
 
-    win.webContents.openDevTools()  // 打开调试工具
+    win.webContents.openDevTools();  // 打开调试工具
     Menu.setApplicationMenu(null);  // 隐藏默认菜单栏
     if(process.argv[2]) {
-        win.loadURL(process.argv[2])
+        win.loadURL(process.argv[2]);
     } else {
-        win.loadURL('index.html')
+        win.loadURL('index.html');
     }
 
-    ipcMain.on("submit", (event, arg) => {
+
+    // 最小化窗口
+    ipcMain.on("min-app", () => {
+        win.minimize();
+    });
+    // 关闭窗口
+    ipcMain.on("close-app", () => {
+        win.close();
+        win.destroy();
+    })
+
+    ipcMain.on("submit", (event) => {
         dialog.showOpenDialog(win, {
             properties: ['openDirectory']
         }).then(result => {
             event.sender.send("reply", result)
         }).catch(err => {
             event.sender.send("reply", err)
-        })
-    })
+        });
+    });
 })
 

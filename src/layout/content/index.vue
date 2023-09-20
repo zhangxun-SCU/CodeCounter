@@ -14,7 +14,7 @@ function send() {
 
 <template>
   <div class="container">
-    <button @click="send">选择文件夹</button>
+    <el-button @click="send">选择文件夹</el-button>
     <span id="message"></span>
   </div>
 </template>

@@ -10,7 +10,7 @@
 <style scoped>
 .container {
   width: 100vw;
-  height: 20vh;
+  height: 15vh;
   background-color: aquamarine;
 }
 </style>
