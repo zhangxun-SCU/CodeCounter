@@ -7,10 +7,15 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    CodeCounterLogo: typeof import('./src/components/core/CodeCounterLogo.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
+    ElCard: typeof import('element-plus/es')['ElCard']
+    ElInput: typeof import('element-plus/es')['ElInput']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
+    ElTag: typeof import('element-plus/es')['ElTag']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    TitleBar: typeof import('./src/components/TitleBar.vue')['default']
+    TitleBar: typeof import('./src/components/core/TitleBar.vue')['default']
   }
 }

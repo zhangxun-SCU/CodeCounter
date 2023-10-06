@@ -7,7 +7,11 @@ export const router = createRouter({
             path: '/',
             component: () => import('@/layout/index.vue'),
             children: [
-
+                {
+                    path: '/count',
+                    name: 'count',
+                    component: () => import('@/views/CountView.vue'),
+                }
             ]
         }
     ]

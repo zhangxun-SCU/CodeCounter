@@ -1,28 +1,32 @@
 <script setup lang="ts">
-import { useIpcRenderer } from "@vueuse/electron"
-const ipcRender = useIpcRenderer()
-function send() {
-  ipcRender.send("submit", "打开资源管理器")
-  ipcRender.on("reply", (event, arg) => {
-    if (!arg.canceled) {
-      (document.getElementById("message") as HTMLElement).innerHTML = arg.filePaths[0];
-    }
-    console.log(arg)
-  });
-}
+import CountView from "@/views/CountView.vue";
+import CodeCounterLogo from "@/components/core/CodeCounterLogo.vue";
 </script>
 
 <template>
   <div class="container">
-    <el-button @click="send">选择文件夹</el-button>
-    <span id="message"></span>
+    <el-tabs tab-position="left" style="height: 100%" class="demo-tabs" type="border-card">
+      <el-tab-pane label="主页"><CodeCounterLogo size="400px"></CodeCounterLogo></el-tab-pane>
+      <el-tab-pane label="Count Code"><CountView></CountView></el-tab-pane>
+      <el-tab-pane label="setting">设置</el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
 <style scoped>
 .container {
-  width: 100vw;
-  height: 80vh;
-  background-color: darkgray;
+  width: 100%;
+  height: calc(98vh - 40px);
 }
+
+.demo-tabs > .el-tabs__content {
+  color: #6b778c;
+  font-size: 32px;
+  width: 100%;
+}
+
+.demo-tabs {
+  width: 100%;
+}
+
 </style>

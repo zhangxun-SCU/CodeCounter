@@ -19,3 +19,7 @@ vector<string> str::split(const string &str, const string& interval) {
     }
     return res;
 }
+
+void str::lower(string &type) {
+    for(char & i : type) i = std::tolower(i);
+}

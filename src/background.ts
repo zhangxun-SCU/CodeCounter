@@ -7,6 +7,7 @@ app.whenReady().then( ()=> {
     const win = new BrowserWindow({
         height: 600,
         width: 800,
+        title: "CodeCounter-Xun",
         frame: false,  // 关闭默认标题栏
         // titleBarStyle: 'hidden',
         // transparent: true,
@@ -27,11 +28,17 @@ app.whenReady().then( ()=> {
 
 
     // 最小化窗口
-    ipcMain.on("min-app", () => {
+    ipcMain.on('miniWin', () => {
         win.minimize();
     });
-    // 关闭窗口
-    ipcMain.on("close-app", () => {
+    ipcMain.on('maxiWin', () => {
+        win.maximize();
+    });
+    ipcMain.on('windowedWin', () => {
+        win.restore();
+        win.center();
+    });
+    ipcMain.on('closeWin', () => {
         win.close();
         win.destroy();
     })
