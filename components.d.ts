@@ -10,7 +10,6 @@ declare module 'vue' {
     CodeCounterLogo: typeof import('./src/components/core/CodeCounterLogo.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
-    ElInput: typeof import('element-plus/es')['ElInput']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']

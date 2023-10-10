@@ -23,13 +23,13 @@ function setWin(operate: string):void {
   </div>
   <div class="winSetter">
     <svg class="icon noDrag" aria-hidden="true" @click="setWin('miniWin')">
-      <use xlink:href="#icon-zuixiaohua"></use>
+      <use xlink:href="#icon-zuixiaohua" class="icon-img"></use>
     </svg>
     <svg class="icon noDrag" aria-hidden="true" @click="setWin('maxiWin')">
-      <use xlink:href="#icon-zuidahua"></use>
+      <use xlink:href="#icon-zuidahua" class="icon-img"></use>
     </svg>
     <svg class="icon noDrag" aria-hidden="true" @click="setWin('closeWin')">
-      <use xlink:href="#icon-guanbi"></use>
+      <use xlink:href="#icon-guanbi" class="icon-img"></use>
     </svg>
   </div>
 </div>
@@ -51,7 +51,8 @@ function setWin(operate: string):void {
   position: absolute;
   display: flex;
   justify-content: space-between;
-  width: 16vw;
+  max-width: 150px;
+  height: 40px;
   right: 3vw;
 }
 
@@ -62,5 +63,9 @@ function setWin(operate: string):void {
 
 .icon:hover {
   background-color: aqua;
+}
+
+.icon-img {
+  font-size: 6px;
 }
 </style>

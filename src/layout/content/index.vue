@@ -6,7 +6,7 @@ import CodeCounterLogo from "@/components/core/CodeCounterLogo.vue";
 <template>
   <div class="container">
     <el-tabs tab-position="left" style="height: 100%" class="demo-tabs" type="border-card">
-      <el-tab-pane label="主页"><CodeCounterLogo size="400px"></CodeCounterLogo></el-tab-pane>
+      <el-tab-pane label="主页"></el-tab-pane>
       <el-tab-pane label="Count Code"><CountView></CountView></el-tab-pane>
       <el-tab-pane label="setting">设置</el-tab-pane>
     </el-tabs>
