@@ -12,5 +12,6 @@ import TitleBar from "@/components/core/TitleBar.vue";
 .container {
   width: 100%;
   height: 40px;
+  background-color: #364B42;
 }
 </style>
