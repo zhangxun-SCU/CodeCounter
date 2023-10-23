@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import CountView from "@/views/CountView.vue";
-import CodeCounterLogo from "@/components/core/CodeCounterLogo.vue";
+import SettingView from "@/views/SettingView.vue";
+// import CodeCounterLogo from "@/components/core/CodeCounterLogo.vue";
 </script>
 
 <template>
   <div class="container">
     <el-tabs tab-position="left" style="height: 100%" class="demo-tabs" type="border-card">
       <el-tab-pane label="主页"></el-tab-pane>
-      <el-tab-pane label="Count Code"><CountView></CountView></el-tab-pane>
-      <el-tab-pane label="setting">设置</el-tab-pane>
+      <el-tab-pane label="Count Code"><CountView/></el-tab-pane>
+      <el-tab-pane label="AI分析"></el-tab-pane>
+      <el-tab-pane label="setting"><SettingView/></el-tab-pane>
     </el-tabs>
   </div>
 </template>

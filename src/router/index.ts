@@ -8,12 +8,16 @@ export const router = createRouter({
             component: () => import('@/layout/index.vue'),
             children: [
                 {
-                    path: '/count',
-                    name: 'count',
-                    component: () => import('@/views/CountView.vue'),
-                }
+                    path: '/content',
+                    name: 'content',
+                    component: () => import('@/layout/content/index.vue'),
+                },
             ]
+        },
+        {
+            path: '/result',
+            name: 'countAmount',
+            component: () => import('@/views/CodeAmountView.vue'),
         }
     ]
 })
-

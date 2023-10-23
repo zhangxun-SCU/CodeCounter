@@ -1,7 +1,7 @@
 // electron 主进程文件
 
 import {app, BrowserWindow, ipcMain, dialog, Menu} from 'electron'
-
+import {CodeCounter} from '@/core/counter.ts';
 
 app.whenReady().then( ()=> {
     const win = new BrowserWindow({
@@ -18,7 +18,7 @@ app.whenReady().then( ()=> {
         }
     });
 
-    win.webContents.openDevTools();  // 打开调试工具
+    // win.webContents.openDevTools();  // 打开调试工具
     Menu.setApplicationMenu(null);  // 隐藏默认菜单栏
     if(process.argv[2]) {
         win.loadURL(process.argv[2]);
@@ -43,14 +43,23 @@ app.whenReady().then( ()=> {
         win.destroy();
     })
 
-    ipcMain.on("submit", (event) => {
+    ipcMain.on("openExplorer", (event) => {
         dialog.showOpenDialog(win, {
             properties: ['openDirectory']
         }).then(result => {
-            event.sender.send("reply", result)
+            event.sender.send("returnPath", result)
         }).catch(err => {
-            event.sender.send("reply", err)
+            event.sender.send("returnPath", err)
         });
     });
+
+    ipcMain.on("countInfo", (event, args) => {
+        const paths = JSON.parse(args.paths);
+        const excludeKeys = JSON.parse(args.excludeKeys);
+        const counter: CodeCounter = new CodeCounter(paths, excludeKeys);
+        counter.count().then(res => {
+            event.sender.send("countRes", res);
+        })
+    })
 })
 

@@ -1,0 +1,15 @@
+{
+  "languageSet": [
+    {
+      "language": "python",
+      "fileTypes": [
+        "py"
+      ]
+    }, {
+      "language": "cpp",
+      "fileTypes": [
+        "cpp", "hpp"
+      ]
+    }
+  ]
+}
