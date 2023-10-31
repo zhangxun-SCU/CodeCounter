@@ -1,14 +1,15 @@
-
+import {languageCount} from "@/interface/codeLanguage.ts";
 
 
 function getLanguageDetail(){
+    let languageDetail: languageCount[] = [];
     return {
         python: {
             language: 'python',
             fileTypes: ['py'],
             check: true,
             lines: 0,
-            files: []
+            fileCount: 0
         },
         java: {
             language: 'java',

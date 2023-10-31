@@ -15,7 +15,7 @@ class CodeCounter {
         this.languageDetail = getLanguageDetail();
     }
 
-    countOneFile(filePath: string): Promise<number> {
+    async countOneFile(filePath: string): Promise<number> {
         return new Promise((resolve, reject) => {
             let lineCount = 0;
             fs.createReadStream(filePath)
@@ -39,7 +39,6 @@ class CodeCounter {
             if (stat.isDirectory()) {
                 await this.processDirectory(filePath);
             } else {
-
                 fileCount++;
                 let arr = filePath.split('.');
                 const linesInFile: any = await this.countOneFile(filePath);
@@ -68,8 +67,6 @@ class CodeCounter {
     async countOnePath(dirPath: string) {
         try {
             await this.processDirectory(dirPath);
-            // console.log('文件数量:', fileCount);
-            // console.log('代码行数:', totalLines);
         } catch (error) {
             console.error('出错:', error);
         }

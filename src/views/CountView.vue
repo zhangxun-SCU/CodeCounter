@@ -2,8 +2,10 @@
 import { useIpcRenderer } from "@vueuse/electron";
 import {ref, reactive, nextTick} from 'vue';
 import { useRouter } from 'vue-router'
+import {useSettingStore} from '@/stores/setting.ts'
 const router = useRouter();
 const ipcRender = useIpcRenderer();
+const settings = useSettingStore();
 function send() {
   ipcRender.send("openExplorer", "打开资源管理器");
 }
@@ -19,7 +21,7 @@ const paths:string[] = reactive([]);
 
 import { ElInput } from 'element-plus'
 const inputValue = ref('')
-const dynamicTags = ref(['lib', 'node_modules'])
+const dynamicTags = ref(['lib', 'node_modules', '.git', '.idea'])
 const inputVisible = ref(false)
 const InputRef = ref<InstanceType<typeof ElInput>>()
 
@@ -49,29 +51,9 @@ const sendCountInfo = (filePaths: string[], excludeKeys: string[]) => {
   loading.value = true;
 }
 
+console.log(settings.languages)
+
 const value1 = ref([]);
-const options = [
-  {
-    value: 'Option1',
-    label: 'Option1',
-  },
-  {
-    value: 'Option2',
-    label: 'Option2',
-  },
-  {
-    value: 'Option3',
-    label: 'Option3',
-  },
-  {
-    value: 'Option4',
-    label: 'Option4',
-  },
-  {
-    value: 'Option5',
-    label: 'Option5',
-  },
-];
 
 const value2 = ref('');
 
@@ -104,10 +86,10 @@ ipcRender.on("countRes", (event, args)=>{
         style="width: 40%"
     >
       <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          v-for="item in settings.languages"
+          :key="item.name"
+          :label="item.name"
+          :value="item.name"
       />
     </el-select>
     <el-date-picker
