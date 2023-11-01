@@ -46,16 +46,21 @@ const handleInputConfirm = () => {
 
 let loading = ref(false);
 const sendCountInfo = (filePaths: string[], excludeKeys: string[]) => {
-  ipcRender.send("countInfo", {paths:JSON.stringify(filePaths),
-    excludeKeys: JSON.stringify(excludeKeys)});
+  console.log(period.value, selectedLanguages.value);
+  ipcRender.send("countInfo", JSON.stringify({
+    paths:filePaths,
+    excludeKeys: excludeKeys,
+    period: period.value,
+    languages: selectedLanguages.value
+  }));
   loading.value = true;
 }
 
 console.log(settings.languages)
 
-const value1 = ref([]);
+const period = ref('');
 
-const value2 = ref('');
+const selectedLanguages = ref([]);
 
 ipcRender.on("countRes", (event, args)=>{
   router.push({
@@ -64,10 +69,13 @@ ipcRender.on("countRes", (event, args)=>{
     query: {
       data: args.language
     },
-
   });
   console.log("res", args.language);
   loading.value = false;
+})
+
+ipcRender.on('debugTest', (event, args) => {
+  console.log('debugTest', args)
 })
 
 </script>
@@ -76,7 +84,7 @@ ipcRender.on("countRes", (event, args)=>{
 <div class="container">
   <div>
     <el-select
-        v-model="value1"
+        v-model="selectedLanguages"
         multiple
         collapse-tags
         collapse-tags-tooltip
@@ -86,14 +94,14 @@ ipcRender.on("countRes", (event, args)=>{
         style="width: 40%"
     >
       <el-option
-          v-for="item in settings.languages"
-          :key="item.name"
+          v-for="(item, key) of settings.languages"
+          :key="key"
           :label="item.name"
           :value="item.name"
       />
     </el-select>
     <el-date-picker
-        v-model="value2"
+        v-model="period"
         type="datetimerange"
         start-placeholder="开始时间"
         end-placeholder="截至时间"

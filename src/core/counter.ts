@@ -1,6 +1,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { getLanguageDetail } from './language.ts'
+import {countInfo} from "@/interface/codeLanguage.ts";
+
 let fileCount:number = 0;
 let totalLines:number = 0;
 
@@ -8,11 +10,16 @@ let totalLines:number = 0;
 class CodeCounter {
     paths: string[]
     excludeKeys: string[]
-    languageDetail
-    constructor(ps:string[], eks: string[]) {
-        this.paths = ps;
-        this.excludeKeys = eks;
-        this.languageDetail = getLanguageDetail();
+    period: string
+    languages: string[]
+    details
+    i: number = 0
+    constructor(countInfo: countInfo) {
+        this.paths = countInfo.paths;
+        this.excludeKeys = countInfo.excludeKeys;
+        this.period = countInfo.period
+        this.languages = countInfo.languages
+        this.details = getLanguageDetail(countInfo.languages);
     }
 
     async countOneFile(filePath: string): Promise<number> {
@@ -39,28 +46,20 @@ class CodeCounter {
             if (stat.isDirectory()) {
                 await this.processDirectory(filePath);
             } else {
-                fileCount++;
                 let arr = filePath.split('.');
                 const linesInFile: any = await this.countOneFile(filePath);
                 this.addCount(linesInFile, arr[arr.length - 1], filePath);
-                totalLines += linesInFile;
             }
         }
     }
 
     addCount(lines: number, type: string, path: string) {
-        if (this.languageDetail.python.fileTypes.includes(type)) {
-            this.languageDetail.python.lines += lines;
-        } else if(this.languageDetail.cpp.fileTypes.includes(type)) {
-            this.languageDetail.cpp.lines += lines;
-        } else if(this.languageDetail.c.fileTypes.includes(type)) {
-            this.languageDetail.c.lines += lines;
-        } else if(this.languageDetail.java.fileTypes.includes(type)) {
-            this.languageDetail.java.lines += lines;
-        } else if(this.languageDetail.javascript.fileTypes.includes(type)) {
-            this.languageDetail.javascript.lines += lines;
-        } else if(this.languageDetail.typescript.fileTypes.includes(type)) {
-            this.languageDetail.typescript.lines += lines;
+        this.i += lines;
+        for(let language in this.details) {
+            if(this.details[language].fileTypes.includes(type)) {
+                this.details[language].lines += lines;
+                this.details[language].filesNum++;
+            }
         }
     }
 
@@ -78,7 +77,7 @@ class CodeCounter {
                 await this.countOnePath(this.paths[i]);
             }
             return {
-                language: JSON.stringify(this.languageDetail)
+                language: JSON.stringify(this.details)
             }
         } catch (error) {
             console.error('出错:', error);

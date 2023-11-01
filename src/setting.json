@@ -1,25 +1,30 @@
 {
-  "languageSet": [
-    {
+  "languageSet": {
+    "python": {
       "name": "python",
       "fileTypes": [
         "py"
       ]
-    }, {
+    },
+    "cpp": {
       "name": "cpp",
       "fileTypes": [
-        "cpp", "hpp"
+        "cpp",
+        "hpp"
       ]
-    }, {
+    },
+    "c": {
       "name": "c",
       "fileTypes": [
-        "c", "h"
+        "c",
+        "h"
       ]
-    }, {
+    },
+    "java": {
       "name": "java",
       "fileTypes": [
         "java"
       ]
     }
-  ]
+  }
 }

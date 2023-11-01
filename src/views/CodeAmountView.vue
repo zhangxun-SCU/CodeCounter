@@ -11,8 +11,9 @@ console.log(data);
   <div class="container">
     <Header></Header>
     <el-table :data="data" stripe style="width: 100%">
-      <el-table-column prop="language" label="Language"></el-table-column>
+      <el-table-column prop="name" label="Language"></el-table-column>
       <el-table-column prop="lines" label="Lines"></el-table-column>
+      <el-table-column prop="filesNum" label="files"></el-table-column>
       <el-table-column prop="fileTypes" label="FileTypes"></el-table-column>
     </el-table>
     <el-button type="primary" @click="router.back()">Primary</el-button>

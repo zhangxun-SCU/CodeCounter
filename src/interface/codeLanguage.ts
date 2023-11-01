@@ -3,18 +3,25 @@ interface languageType {
     fileTypes: string[],
 }
 
-interface languageCount {
+
+interface languageDetail {
     name: string,
-    fileTypes: string[]
+    fileTypes: string[],
     lines: number,
-    funcCount: number,
-    fileCount: number
+    filesNum: number,
+    funcNum: number
 }
 
-
-interface languageDetails {
-    [name: string]: languageCount
+interface Details {
+    [string]: languageDetail
 }
 
-export type {languageType, languageCount, languageDetails}
+interface countInfo {
+    paths: string[],
+    excludeKeys: string[],
+    period: string,
+    languages: string[]
+}
+
+export type {languageType, languageCount, countInfo, Details, languageDetail}
 
