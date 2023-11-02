@@ -25,6 +25,13 @@
       "fileTypes": [
         "java"
       ]
+    },
+    "javascript": {
+      "name": "javascript",
+      "fileTypes": [
+        "js", "ts"
+      ]
     }
-  }
+  },
+  "countFuncNums": false
 }

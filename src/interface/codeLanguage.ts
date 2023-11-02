@@ -23,5 +23,5 @@ interface countInfo {
     languages: string[]
 }
 
-export type {languageType, languageCount, countInfo, Details, languageDetail}
+export type {languageType, countInfo, Details, languageDetail}
 
