@@ -16,7 +16,7 @@ console.log(data);
       <el-table-column prop="filesNum" label="files"></el-table-column>
       <el-table-column prop="fileTypes" label="FileTypes"></el-table-column>
     </el-table>
-    <el-button type="primary" @click="router.back()">Primary</el-button>
+    <el-button type="primary" @click="router.back()">返回</el-button>
   </div>
 </template>
 
