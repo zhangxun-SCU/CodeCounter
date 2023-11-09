@@ -12,7 +12,10 @@ function getLanguageDetail(selected: string[]) {
             filesNum: 0,
             lines: 0,
             fileTypes: settings.languageSet[selected[i]].fileTypes,
-            funcNum: 0
+            funcNum: 0,
+            avrFuncLength: 0,
+            maxFuncLength: 0,
+            minFuncLength: Infinity
         };
         details[selected[i]] = language;
     }

@@ -13,6 +13,15 @@ console.log(data);
     <el-table :data="data" stripe style="width: 100%">
       <el-table-column prop="name" label="Language"></el-table-column>
       <el-table-column prop="lines" label="Lines"></el-table-column>
+      <el-table-column prop="funcNum" label="funcNum"></el-table-column>
+      <el-table-column prop="maxFuncLength" label="maxFuncLength" ></el-table-column>
+      <el-table-column prop="minFuncLength" label="minFuncLength"></el-table-column>
+      <el-table-column prop="avrFuncLength" label="avrFuncLength">
+        <template #default="scope">
+          <span>{{scope.row.avrFuncLength.toFixed(2)}}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column prop="filesNum" label="files"></el-table-column>
       <el-table-column prop="fileTypes" label="FileTypes"></el-table-column>
     </el-table>

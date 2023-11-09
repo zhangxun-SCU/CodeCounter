@@ -4,8 +4,10 @@ import Content from './content/index.vue'
 </script>
 
 <template>
-  <Header></Header>
-  <Content></Content>
+  <div class="w-full h-full flex flex-col">
+    <Header></Header>
+    <Content></Content>
+  </div>
 </template>
 
 <style scoped>

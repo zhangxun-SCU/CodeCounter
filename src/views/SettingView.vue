@@ -29,7 +29,7 @@ console.log(languageCheckedGroup.length)
 </script>
 
 <template>
-  <div class="container">
+  <div class="w-full h-full flex flex-col justify-around">
     <el-card class="language-select" shadow="hover">
       <template #header>
         <div class="card-header">
@@ -50,13 +50,6 @@ console.log(languageCheckedGroup.length)
 </template>
 
 <style scoped>
-.container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
 .card-header {
   display: flex;
   justify-content: space-around;

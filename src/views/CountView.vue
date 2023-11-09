@@ -81,8 +81,8 @@ ipcRender.on('debugTest', (event, args) => {
 </script>
 
 <template>
-<div class="container">
-  <div>
+<div class="w-full h-full flex flex-col justify-around">
+  <div class="flex justify-between">
     <el-select
         v-model="selectedLanguages"
         multiple
@@ -112,7 +112,7 @@ ipcRender.on('debugTest', (event, args) => {
         style="width: 40%"
     />
   </div>
-  <el-card class="code-path" shadow="hover">
+  <el-card class="w-full h-[30vh] max-h-[50vh]" shadow="hover">
     <template #header>
       <div class="card-header">
         <span>代码路径</span>
@@ -122,7 +122,7 @@ ipcRender.on('debugTest', (event, args) => {
     <div v-for="(item, index) in paths" :id="index">{{ item }}</div>
   </el-card>
 
-  <el-card class="exclude-words" shadow="hover">
+  <el-card class="h-[25vh] max-h-[35vh]" shadow="hover">
     <template #header>
       <div class="card-header">
         <span>排除关键字</span>
@@ -150,9 +150,10 @@ ipcRender.on('debugTest', (event, args) => {
       {{ tag }}
     </el-tag>
   </el-card>
-  <div class="count-container">
+  <div class="count-container flex flex-1">
     <el-button
         type="success"
+        class="hover: shadow-teal-100"
         style="height: 14vmin; width: 14vmin; border-radius: 7vmin;"
         @click="sendCountInfo(paths, dynamicTags)"
         v-loading.fullscreen.lock="loading"
@@ -164,22 +165,6 @@ ipcRender.on('debugTest', (event, args) => {
 </template>
 
 <style scoped>
-.container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-.code-path {
-  width: 100%;
-  max-height: 55%;
-  overflow-y: auto;
-}
-
-.exclude-words {
-  max-height: 25%;
-}
 
 .card-header {
   display: flex;

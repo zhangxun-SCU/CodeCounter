@@ -17,55 +17,32 @@ function setWin(operate: string):void {
 </script>
 
 <template>
-<div class="container">
+<div class="flex w-full justify-between items-center px-4 drag">
   <div class="title">
     <CodeCounterLogo size="40px"/>
   </div>
-  <div class="winSetter">
-    <svg class="icon noDrag" aria-hidden="true" @click="setWin('miniWin')">
-      <use xlink:href="#icon-zuixiaohua" class="icon-img"></use>
+  <div class="winSetter flex justify-between h-4 w-1/12 right-1.5">
+    <svg class="noDrag hover:bg-teal-200 hover:shadow-teal-100" aria-hidden="true" @click="setWin('miniWin')">
+      <use xlink:href="#icon-zuixiaohua" class="text-xs"></use>
     </svg>
-    <svg class="icon noDrag" aria-hidden="true" @click="setWin('maxiWin')">
-      <use xlink:href="#icon-zuidahua" class="icon-img"></use>
+    <svg class="noDrag hover:bg-teal-200 hover:shadow-teal-100" aria-hidden="true" @click="setWin('maxiWin')">
+      <use xlink:href="#icon-zuidahua" class="text-xs"></use>
     </svg>
-    <svg class="icon noDrag" aria-hidden="true" @click="setWin('closeWin')">
-      <use xlink:href="#icon-guanbi" class="icon-img"></use>
+    <svg class="noDrag hover:bg-teal-200 hover:shadow-teal-100" aria-hidden="true" @click="setWin('closeWin')">
+      <use xlink:href="#icon-guanbi" class="text-xs"></use>
     </svg>
   </div>
 </div>
 </template>
 
 <style scoped>
-.container {
-  position: relative;
+.drag {
   -webkit-app-region: drag;
-  display: flex;
-  align-items: center;
 }
 
 .noDrag {
   -webkit-app-region: no-drag !important;
 }
 
-.winSetter {
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  max-width: 150px;
-  height: 40px;
-  right: 3vw;
-}
 
-.icon {
-  padding: 0 calc(20px - 0.5em);
-  max-height: 40px;
-}
-
-.icon:hover {
-  background-color: aqua;
-}
-
-.icon-img {
-  font-size: 6px;
-}
 </style>

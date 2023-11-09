@@ -10,10 +10,13 @@ interface languageDetail {
     lines: number,
     filesNum: number,
     funcNum: number
+    maxFuncLength: number
+    minFuncLength: number
+    avrFuncLength: number
 }
 
 interface Details {
-    [string]: languageDetail
+    [code: string]: languageDetail
 }
 
 interface countInfo {
@@ -23,5 +26,13 @@ interface countInfo {
     languages: string[]
 }
 
-export type {languageType, countInfo, Details, languageDetail}
+
+interface FuncDetail {
+    maxLine: number,
+    minLine: number,
+    totalLine: number,
+    funcNum: number
+}
+
+export type {languageType, countInfo, Details, languageDetail, FuncDetail}
 

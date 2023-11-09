@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 import {languageType} from "@/interface/codeLanguage.ts";
 
-let languages: {[string]: languageType} = {};
+let languages: {[code: string]: languageType} = {};
 
 export const useSettingStore = defineStore("setting", {
     state: () => {

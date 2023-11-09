@@ -5,8 +5,8 @@ import SettingView from "@/views/SettingView.vue";
 </script>
 
 <template>
-  <div class="container">
-    <el-tabs tab-position="left" style="height: 100%" class="demo-tabs" type="border-card">
+  <div class="w-full flex-auto h-full">
+    <el-tabs tab-position="left" class="tabs w-full h-full" type="border-card">
       <el-tab-pane label="主页"></el-tab-pane>
       <el-tab-pane label="Count Code"><CountView/></el-tab-pane>
       <el-tab-pane label="AI分析"></el-tab-pane>
@@ -15,20 +15,14 @@ import SettingView from "@/views/SettingView.vue";
   </div>
 </template>
 
-<style scoped>
-.container {
-  width: 100%;
-  height: calc(98vh - 40px);
+<style>
+
+.tabs > .el-tabs__content {
+  height: 100%;
 }
 
-.demo-tabs > .el-tabs__content {
-  color: #6b778c;
-  font-size: 32px;
-  width: 100%;
+.tabs > .el-tabs__content > .el-tab-pane {
+  @apply h-full w-full;
+  height: 100%;
 }
-
-.demo-tabs {
-  width: 100%;
-}
-
 </style>
