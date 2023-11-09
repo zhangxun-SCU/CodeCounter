@@ -2,6 +2,7 @@
 
 import {app, BrowserWindow, ipcMain, dialog, Menu} from 'electron'
 import {CodeCounter} from '@/core/counter.ts';
+import fs from 'node:fs'
 
 app.whenReady().then( ()=> {
     // 主窗口
@@ -62,6 +63,7 @@ app.whenReady().then( ()=> {
         const counter: CodeCounter = new CodeCounter(info);
         event.sender.send('debugTest', counter);
         counter.count().then(res => {
+            fs.writeFileSync('./result.json', JSON.stringify(res.language));
             event.sender.send("countRes", res);
         })
     })

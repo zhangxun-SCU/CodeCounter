@@ -4,7 +4,7 @@
 
 int main() {
     std::clock_t start = std::clock();
-    CodeCounter cc = CodeCounter("C:\\Users\\Surface\\OneDrive\\学习资料\\现代软件工程\\测试用例3");
+    CodeCounter cc = CodeCounter("C:\\Users\\Surface\\OneDrive\\学习资料\\现代软件工程\\测试用例2");
     cc.CodeCount();
     cc.TellDetails();
     std::clock_t end = std::clock();

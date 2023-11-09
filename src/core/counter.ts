@@ -1,9 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { getLanguageDetail } from './language.ts';
-import {countInfo, FuncDetail} from "@/interface/codeLanguage.ts";
-import {Details} from "@/interface/codeLanguage.ts";
+import {CountInfo, FuncDetail} from "@/interface/lang.ts";
+import {Details} from "@/interface/lang.ts";
 
+/**
+ * counter
+ */
 class CodeCounter {
     paths: string[]
     excludeKeys: string[]
@@ -12,17 +15,20 @@ class CodeCounter {
     details: Details
     allTypes: string[] = []
     funcNeedTypes: string[] = ['c', 'cpp', 'java']
-    constructor(countInfo: countInfo) {
+    lines: number[] = []
+    constructor(countInfo: CountInfo) {
         this.paths = countInfo.paths;
         this.excludeKeys = countInfo.excludeKeys;
         this.period = countInfo.period
         this.languages = countInfo.languages
         this.details = getLanguageDetail(countInfo.languages);
+        // 初始化所有需要统计的代码文件类型
         for(let key in this.details) {
             this.allTypes.push(...this.details[key].fileTypes)
         }
     }
 
+    // 对单个文件的count
     async countOneFile(filePath: string): Promise<number> {
         return new Promise((resolve, reject) => {
             let lineCount = 0;
@@ -38,11 +44,12 @@ class CodeCounter {
         })
     }
 
+    // 对一个文件中的函数信息统计
     async countFuncNum(filePath: string, type: string):Promise<FuncDetail> {
         let reg: RegExp
-        if(type === 'c') reg = new RegExp(/\w+(\s+|\s*\*+\s*)\w+\s*\((\w+(\s+|\s*\*+\s*)\w+\s*,?\s*)*\)[\s\n]*{/, 'g');
+        if(type === 'c') reg = new RegExp(/\w+(\s+|\s*\*+\s*)\w+\s*\((\w+(\s+|\s*\*+\s*)\w+(\[])?\s*,?\s*)*\)[\s\n]*{/, 'g');
         else if(type === 'cpp') reg = new RegExp(/\w+\s*(<.*>)?(\s+|\s*[*&]+\s*)(\w+(<.*>)?::)?\w+\s*\((\w+\s*(<.*>)?(\s+|\s*[*&]+\s*)\w+\s*,?\s*)*\)[\s\n]*{/, 'g');
-        else if(type === 'java') reg = new RegExp(/\w+\s*(<.*>)?(\[])*\s+\w+\s*\((\w+\s*(<.*>)?(\[])*\s+\w+\s*(,?)\s*)*\)[\s\n]*(.+)?\s*{/, 'g');
+        else if(type === 'java') reg = new RegExp(/\w+\s*(<.*>)?(\[])*\s+\w+\s*\((\w+\s*(<.*>)?(\[])*\s+\w+(\[])*\s*(,?)\s*)*\)[\s\n]*(.+)?\s*{/, 'g');
         return new Promise((resolve, reject) => {
             const funcOneFileDetail: FuncDetail = {
                 totalLine: 0,
@@ -60,6 +67,7 @@ class CodeCounter {
                     let funcLine = this.countFuncLines(codeStr.slice(result.index));
                     if(funcLine > funcOneFileDetail.maxLine) funcOneFileDetail.maxLine = funcLine;
                     if(funcLine < funcOneFileDetail.minLine) funcOneFileDetail.minLine = funcLine;
+                    if(type === 'cpp') this.lines.push(funcLine);
                     funcOneFileDetail.totalLine += funcLine;
                     result = reg.exec(codeStr);
                 }
@@ -70,25 +78,26 @@ class CodeCounter {
 
     countFuncLines(code: string): number {
         let lines: number = 0;
-        let arr: string[] = [];
+        let braceStack: string[] = [];
         let leftBrace: boolean = false;
         let index = 0;
-        while(index < code.length && (!leftBrace || (leftBrace && arr.length !== 0))) {
+        while(index < code.length && (!leftBrace || (leftBrace && braceStack.length !== 0))) {
             if (code[index] === '\n') ++lines;
             else if(code[index] === '{') {
-                arr.push(code[index]);
+                braceStack.push(code[index]);
                 leftBrace = true;
             } else if(code[index] === '}') {
-                let c = arr.pop() as string;
+                let c = braceStack.pop() as string;
                 if(c === '}') {
-                    arr.push(c);
-                    arr.push(code[index]);
+                    braceStack.push(c);
+                    braceStack.push(code[index]);
                 }
             }
             ++index;
         }
         return lines;
     }
+
     async processDirectory(dirPath: string) {
         const files = fs.readdirSync(dirPath);
         for (const file of files) {
@@ -98,8 +107,8 @@ class CodeCounter {
             if (stat.isDirectory()) {
                 await this.processDirectory(filePath);
             } else {
-                let arr = filePath.split('.');
-                const type = arr[arr.length - 1].toLowerCase();
+                let fileTypeArr = filePath.split('.');
+                const type = fileTypeArr[fileTypeArr.length - 1].toLowerCase();
                 let funcDetail: FuncDetail | null = null;
                 if(!this.allTypes.includes(type)) continue;
                 const linesInFile: any = await this.countOneFile(filePath);
@@ -116,7 +125,7 @@ class CodeCounter {
             if(this.details[language].fileTypes.includes(type)) {
                 this.details[language].lines += lines;
                 this.details[language].filesNum++;
-                if(funcDetail === null) break;
+                if(funcDetail === null) break;  // 没有函数信息
                 this.details[language].funcNum += funcDetail.funcNum;  /* 函数个数 */
                 if(funcDetail.maxLine > this.details[language].maxFuncLength) {  /* 最大函数长度 */
                     this.details[language].maxFuncLength = funcDetail.maxLine;
