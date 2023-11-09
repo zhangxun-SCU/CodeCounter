@@ -4,7 +4,7 @@ import path from "path";
 
 function getLanguageDetail(selected: string[]) {
     const bf = fs.readFileSync(path.join(path.resolve(__dirname, '..'), 'src/setting.json'));
-    const settings = JSON.parse(bf);
+    const settings = JSON.parse(bf.toString());
     let details: Details = {};
     for(let i = 0; i < selected.length; ++i) {
         let language: languageDetail = {

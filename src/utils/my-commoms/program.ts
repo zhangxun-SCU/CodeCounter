@@ -5,7 +5,7 @@ function initShader(gl, type, source) {
     return shader;
 }
 
-function initShaderProgram(gl, vsSource, fsSource) {
+function initShaderProgram(gl, vsSource: string, fsSource: string) {
     const vertexShader = initShader(gl, gl.VERTEX_SHADER, vsSource);
     const fragmentShader = initShader(gl, gl.FRAGMENT_SHADER, fsSource);
     const shaderProgram = gl.createProgram();

@@ -10,7 +10,7 @@ function send() {
   ipcRender.send("openExplorer", "打开资源管理器");
 }
 ipcRender.on("returnPath", (event, arg) => {
-  // console.log(event);
+  console.log(event);
   if (!arg.canceled) {
     // console.log(arg);
     paths.push(arg.filePaths[0]);
@@ -70,12 +70,15 @@ ipcRender.on("countRes", (event, args)=>{
       data: args.language
     },
   });
+  console.log(event)
   console.log("res", args.language);
   loading.value = false;
 })
 
 ipcRender.on('debugTest', (event, args) => {
   console.log('debugTest', args)
+  console.log(event)
+
 })
 
 </script>
@@ -119,7 +122,7 @@ ipcRender.on('debugTest', (event, args) => {
         <el-button class="button" @click="send">选择文件夹</el-button>
       </div>
     </template>
-    <div v-for="(item, index) in paths" :id="index">{{ item }}</div>
+    <div v-for="(item, index) in paths" :id="index.toString()">{{ item }}</div>
   </el-card>
 
   <el-card class="h-[25vh] max-h-[35vh]" shadow="hover">

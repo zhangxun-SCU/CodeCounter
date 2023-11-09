@@ -2,8 +2,6 @@
 
 import {app, BrowserWindow, ipcMain, dialog, Menu} from 'electron'
 import {CodeCounter} from '@/core/counter.ts';
-import fs from "node:fs";
-import path from "path";
 
 app.whenReady().then( ()=> {
     // 主窗口
@@ -61,7 +59,6 @@ app.whenReady().then( ()=> {
 
     ipcMain.on("countInfo", (event, args) => {
         let info = JSON.parse(args)
-        const {paths, excludeKeys, period, languages} = info;
         const counter: CodeCounter = new CodeCounter(info);
         event.sender.send('debugTest', counter);
         counter.count().then(res => {

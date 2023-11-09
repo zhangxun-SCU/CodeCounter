@@ -5,7 +5,7 @@ import {onMounted} from "vue";
 import {mat4} from '@/assets/js/esm/index.js';
 
 onMounted(() => {
-  const canvas = document.getElementById("canvas");
+  const canvas = document.getElementById("canvas") as HTMLCanvasElement;
   const gl = canvas.getContext("webgl");
   const {positionBuffer, colorBuffer} = initBuffers(gl, vertexData, colorData);
   const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
