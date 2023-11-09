@@ -20,7 +20,7 @@ app.whenReady().then( ()=> {
         }
     });
 
-    // win.webContents.openDevTools();  // 打开调试工具
+    win.webContents.openDevTools();  // 打开调试工具
     Menu.setApplicationMenu(null);  // 隐藏默认菜单栏
     if(process.argv[2]) {
         win.loadURL(process.argv[2]);

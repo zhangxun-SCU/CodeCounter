@@ -39,7 +39,7 @@ class CodeCounter {
     }
 
     async countFuncNum(filePath: string, type: string):Promise<FuncDetail> {
-        let reg: RegExp
+        let reg: RegExp;
         if(type === 'c') reg = new RegExp(/\w+(\s+|\s*\*+\s*)\w+\s*\((\w+(\s+|\s*\*+\s*)\w+\s*,?\s*)*\)[\s\n]*{/, 'g');
         else if(type === 'cpp') reg = new RegExp(/\w+\s*(<.*>)?(\s+|\s*[*&]+\s*)(\w+(<.*>)?::)?\w+\s*\((\w+\s*(<.*>)?(\s+|\s*[*&]+\s*)\w+\s*,?\s*)*\)[\s\n]*{/, 'g');
         else if(type === 'java') reg = new RegExp(/\w+\s*(<.*>)?(\[])*\s+\w+\s*\((\w+\s*(<.*>)?(\[])*\s+\w+\s*(,?)\s*)*\)[\s\n]*(.+)?\s*{/, 'g');
@@ -55,7 +55,7 @@ class CodeCounter {
                 let codeStr = data.toString();
                 let result =  reg.exec(codeStr);
                 while (result !== null) {
-                    ++funcOneFileDetail.funcNum;
+                    funcOneFileDetail.funcNum++;
                     /** 数行数 **/
                     let funcLine = this.countFuncLines(codeStr.slice(result.index));
                     if(funcLine > funcOneFileDetail.maxLine) funcOneFileDetail.maxLine = funcLine;
@@ -117,6 +117,7 @@ class CodeCounter {
                 this.details[language].lines += lines;
                 this.details[language].filesNum++;
                 if(funcDetail === null) break;
+                if(funcDetail.funcNum <= 0) break;
                 this.details[language].funcNum += funcDetail.funcNum;  /* 函数个数 */
                 if(funcDetail.maxLine > this.details[language].maxFuncLength) {  /* 最大函数长度 */
                     this.details[language].maxFuncLength = funcDetail.maxLine;

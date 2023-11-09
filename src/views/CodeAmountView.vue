@@ -8,7 +8,7 @@ console.log(data);
 </script>
 
 <template>
-  <div class="container">
+  <div class="w-full h-full">
     <Header></Header>
     <el-table :data="data" stripe style="width: 100%">
       <el-table-column prop="name" label="Language"></el-table-column>
