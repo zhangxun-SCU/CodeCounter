@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {initShaderProgram} from '@/utils/my-commoms/program.ts';
-import {initBuffers} from "@/utils/my-commoms/buffer.ts";
+import {initShaderProgram} from '@/utils/webglUtils/program.ts';
+import {initBuffers} from "@/utils/webglUtils/buffer.ts";
 import {onMounted} from "vue";
 import {mat4} from '@/assets/js/esm/index.js';
 

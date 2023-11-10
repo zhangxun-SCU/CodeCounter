@@ -1,10 +1,15 @@
-interface languageType {
+/**
+ * setting.json 和store中的 编程语言类型
+ */
+interface LangType {
     name: string,
     fileTypes: string[],
 }
 
-
-interface languageDetail {
+/**
+ * 编程语言统计信息类型
+ */
+interface LangDetail {
     name: string,
     fileTypes: string[],
     lines: number,
@@ -15,18 +20,26 @@ interface languageDetail {
     avrFuncLength: number
 }
 
+/**
+ * 统计信息
+ */
 interface Details {
-    [code: string]: languageDetail
+    [code: string]: LangDetail
 }
 
-interface countInfo {
+/**
+ * 传入参数类型
+ */
+interface CountInfo {
     paths: string[],
     excludeKeys: string[],
     period: string,
     languages: string[]
 }
 
-
+/**
+ * 函数统计信息
+ */
 interface FuncDetail {
     maxLine: number,
     minLine: number,
@@ -34,5 +47,5 @@ interface FuncDetail {
     funcNum: number
 }
 
-export type {languageType, countInfo, Details, languageDetail, FuncDetail}
+export type {LangType, CountInfo, Details, LangDetail, FuncDetail}
 

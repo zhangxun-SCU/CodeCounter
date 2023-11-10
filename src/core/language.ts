@@ -1,4 +1,4 @@
-import {Details, languageDetail,} from "@/interface/codeLanguage.ts";
+import {Details, LangDetail,} from "@/interface/lang.ts";
 import fs from "node:fs";
 import path from "path";
 
@@ -7,7 +7,7 @@ function getLanguageDetail(selected: string[]) {
     const settings = JSON.parse(bf.toString());
     let details: Details = {};
     for(let i = 0; i < selected.length; ++i) {
-        let language: languageDetail = {
+        let language: LangDetail = {
             name: selected[i],
             filesNum: 0,
             lines: 0,
