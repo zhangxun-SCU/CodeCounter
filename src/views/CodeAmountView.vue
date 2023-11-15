@@ -9,11 +9,11 @@ const data = Object.values(JSON.parse(<string>route.query.data));
 console.log(data);
 
 // 数据导出
-function exportData(type: string) {
+function exportData(/*type: string*/) {
   ipcRender.send('exportData', JSON.stringify(data));
 }
 ipcRender.on("exportRes", (event, args) => {
-
+  console.log(event, args)
 })
 </script>
 
