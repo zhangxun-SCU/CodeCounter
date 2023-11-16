@@ -63,7 +63,7 @@ app.whenReady().then( ()=> {
         const counter: CodeCounter = new CodeCounter(info);
         event.sender.send('debugTest', counter);
         counter.count().then(res => {
-            fs.writeFileSync('./result.json', JSON.stringify(res.language));
+            fs.writeFileSync('./result.json', res.language);
             event.sender.send("countRes", res);
         })
     })
