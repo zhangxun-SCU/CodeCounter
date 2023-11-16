@@ -122,7 +122,7 @@ ipcRender.on('debugTest', (event, args) => {
         <el-button class="button" @click="send">选择文件夹</el-button>
       </div>
     </template>
-    <div v-for="(item, index) in paths" :id="index.toString()">{{ item }}</div>
+    <div v-for="(item, index) in paths" :key="index">{{ item }}</div>
   </el-card>
 
   <el-card class="h-[25vh] max-h-[35vh]" shadow="hover">

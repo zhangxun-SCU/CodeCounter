@@ -47,8 +47,8 @@ class CodeCounter {
     // 对一个文件中的函数信息统计
     async countFuncNum(filePath: string, type: string):Promise<FuncDetail> {
         let reg: RegExp
-        if(type === 'c') reg = new RegExp(/\w+(\s+|\s*\*+\s*)\w+\s*\((\w+(\s+|\s*\*+\s*)\w+(\[])?\s*,?\s*)*\)[\s\n]*{/, 'g');
-        else if(type === 'cpp') reg = new RegExp(/\w+\s*(<.*>)?(\s+|\s*[*&]+\s*)(\w+(<.*>)?::)?\w+\s*\((\w+\s*(<.*>)?(\s+|\s*[*&]+\s*)\w+\s*,?\s*)*\)[\s\n]*{/, 'g');
+        if(type === 'c') reg = new RegExp(/\w+(\s+|\s*\*+\s*)\w+\s*\((\w+(\s+|\s*\*+\s*)\w+(\[])?\s*,?\s*)*\)\s*{/, 'g');
+        else if(type === 'cpp') reg = new RegExp(/\w+\s*(<.*>)?(\s+|\s*[*&]+\s*)(\w+(<.*>)?::)?\w+\s*\((\w+\s*(<.*>)?(\s+|\s*[*&]+\s*)\w+(\[])?\s*,?\s*)*\)\s*{/, 'g');
         else if(type === 'java') reg = new RegExp(/\w+\s*(<.*>)?(\[])*\s+\w+\s*\((\w+\s*(<.*>)?(\[])*\s+\w+(\[])*\s*(,?)\s*)*\)[\s\n]*(.+)?\s*{/, 'g');
         return new Promise((resolve, reject) => {
             const funcOneFileDetail: FuncDetail = {
@@ -62,7 +62,7 @@ class CodeCounter {
                 let codeStr = data.toString();
                 let result =  reg.exec(codeStr);
                 while (result !== null) {
-                    ++funcOneFileDetail.funcNum;
+                    funcOneFileDetail.funcNum++;
                     /** 数行数 **/
                     let funcLine = this.countFuncLines(codeStr.slice(result.index));
                     if(funcLine > funcOneFileDetail.maxLine) funcOneFileDetail.maxLine = funcLine;
@@ -125,7 +125,9 @@ class CodeCounter {
             if(this.details[language].fileTypes.includes(type)) {
                 this.details[language].lines += lines;
                 this.details[language].filesNum++;
-                if(funcDetail === null) break;  // 没有函数信息
+                if(funcDetail === null) break;
+                if(funcDetail.funcNum <= 0) break;
+
                 this.details[language].funcNum += funcDetail.funcNum;  /* 函数个数 */
                 if(funcDetail.maxLine > this.details[language].maxFuncLength) {  /* 最大函数长度 */
                     this.details[language].maxFuncLength = funcDetail.maxLine;
@@ -134,9 +136,7 @@ class CodeCounter {
                     this.details[language].minFuncLength = funcDetail.maxLine;
                 }
                 /* 平均函数长度 */
-                this.details[language].avrFuncLength = (this.details[language].avrFuncLength *
-                    this.details[language].funcNum + funcDetail.totalLine) /
-                    (this.details[language].funcNum + funcDetail.funcNum);
+                this.details[language].totalFuncLength += funcDetail.totalLine;
             }
         }
     }

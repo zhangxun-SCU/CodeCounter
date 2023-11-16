@@ -1,10 +1,24 @@
 <script setup lang="ts">
 import { useRoute, useRouter }  from 'vue-router';
+import { useIpcRenderer } from "@vueuse/electron";
 import Header from '@/layout/header/index.vue';
+import {LangDetail} from "@/interface/lang.ts";
+const ipcRender = useIpcRenderer();
 const route = useRoute();
 const router = useRouter();
-const data = Object.values(JSON.parse(<string>route.query.data));
+const data: LangDetail[] = Object.values(JSON.parse(<string>route.query.data));
 console.log(data);
+data.forEach((item: LangDetail) => {
+  item.avrFuncLength = item?.totalFuncLength / item?.funcNum;
+})
+
+// 数据导出
+function exportData(/*type: string*/) {
+  ipcRender.send('exportData', JSON.stringify(data));
+}
+ipcRender.on("exportRes", (event, args) => {
+  console.log(event, args)
+})
 </script>
 
 <template>
@@ -27,6 +41,7 @@ console.log(data);
     </el-table>
     <div class="w-full flex justify-center">
       <el-button type="primary" @click="router.back()">返回</el-button>
+      <el-button type="primary" @click="exportData">导出</el-button>
     </div>
   </div>
 </template>

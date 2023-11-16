@@ -18,6 +18,7 @@ interface LangDetail {
     maxFuncLength: number
     minFuncLength: number
     avrFuncLength: number
+    totalFuncLength: number
 }
 
 /**
