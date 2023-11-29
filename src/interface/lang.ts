@@ -14,11 +14,13 @@ interface LangDetail {
     fileTypes: string[],
     lines: number,
     filesNum: number,
-    funcNum: number
-    maxFuncLength: number
-    minFuncLength: number
-    avrFuncLength: number
-    totalFuncLength: number
+    funcNum: number,
+    maxFuncLength: number,
+    minFuncLength: number,
+    avrFuncLength: number,
+    midFuncLength: number,
+    totalFuncLength: number,
+    allFuncNums: Array<number>,
 }
 
 /**
@@ -45,7 +47,8 @@ interface FuncDetail {
     maxLine: number,
     minLine: number,
     totalLine: number,
-    funcNum: number
+    funcNum: number,
+    allFuncNums: number[]
 }
 
 export type {LangType, CountInfo, Details, LangDetail, FuncDetail}

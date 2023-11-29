@@ -71,14 +71,13 @@ ipcRender.on("countRes", (event, args)=>{
     },
   });
   console.log(event)
-  console.log("res", args.language);
+  console.log(args)
   loading.value = false;
 })
 
 ipcRender.on('debugTest', (event, args) => {
   console.log('debugTest', args)
   console.log(event)
-
 })
 
 </script>

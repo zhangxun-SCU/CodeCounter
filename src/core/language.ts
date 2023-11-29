@@ -16,7 +16,9 @@ function getLanguageDetail(selected: string[]) {
             totalFuncLength: 0,
             maxFuncLength: 0,
             minFuncLength: Infinity,
-            avrFuncLength: 0
+            avrFuncLength: 0,
+            midFuncLength: 0,
+            allFuncNums: []
         };
         details[selected[i]] = language;
     }

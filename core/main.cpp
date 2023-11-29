@@ -20,14 +20,23 @@ class Lion: public Animal {
 public:
     string name = "Lion";
     void eat() const override {
-        cout << this->name << "eat." << endl;
+        cout << this->name << " eat food." << endl;
     }
 };
 
+class Cat: public Animal {
+public:
+    string name = "Cat";
+    void eat() const override {
+        cout << this->name << " eat food." << endl;
+    }
+};
+
+
 int main() {
 
-    Feeder *feeder = new Feeder();
-    vector<Animal*> animals = {new Lion()};
+    auto *feeder = new Feeder();
+    vector<Animal*> animals = {new Lion(), new Cat()};
     feeder->feed(animals);
     return 0;
 }

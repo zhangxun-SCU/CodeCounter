@@ -8,9 +8,9 @@ const route = useRoute();
 const router = useRouter();
 const data: LangDetail[] = Object.values(JSON.parse(<string>route.query.data));
 console.log(data);
-data.forEach((item: LangDetail) => {
-  item.avrFuncLength = item?.totalFuncLength / item?.funcNum;
-})
+// data.forEach((item: LangDetail) => {
+//   item.avrFuncLength = item?.totalFuncLength / item?.funcNum;
+// })
 
 // 数据导出
 function exportData(/*type: string*/) {
@@ -30,6 +30,7 @@ ipcRender.on("exportRes", (event, args) => {
       <el-table-column prop="funcNum" label="funcNum"></el-table-column>
       <el-table-column prop="maxFuncLength" label="maxFuncLength" ></el-table-column>
       <el-table-column prop="minFuncLength" label="minFuncLength"></el-table-column>
+      <el-table-column prop="midFuncLength" label="midFuncLength"></el-table-column>
       <el-table-column prop="avrFuncLength" label="avrFuncLength">
         <template #default="scope">
           <span>{{scope.row.avrFuncLength.toFixed(2)}}</span>

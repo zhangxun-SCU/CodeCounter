@@ -5,6 +5,7 @@ import {CodeCounter} from '@/core/counter.ts';
 import fs from 'node:fs'
 import {json2csv} from "@/utils/json2csv.ts";
 import {json2xml} from "@/utils/json2xml.ts";
+import Details = Electron.Details;
 
 app.whenReady().then( ()=> {
     // 主窗口
@@ -66,7 +67,23 @@ app.whenReady().then( ()=> {
         const counter: CodeCounter = new CodeCounter(info);
         event.sender.send('debugTest', counter);
         counter.count().then(res => {
-            event.sender.send("countRes", res);
+            const details: Details = JSON.parse(res.language);
+            // for(let lang in details) {
+            //
+            // }
+            /* 结果处理 */
+            Object.keys(details).forEach((lang: string) => {
+                details[lang].avrFuncLength = details[lang].totalFuncLength / details[lang].funcNum;
+                details[lang].allFuncNums.sort((a: number, b: number)=> {
+                    return a - b;
+                });
+                details[lang].midFuncLength = details[lang].allFuncNums[(Math.round(details[lang].funcNum / 2))];
+                details[lang].minFuncLength = details[lang].allFuncNums[0];
+                details[lang].maxFuncLength = details[lang].allFuncNums[details[lang].funcNum - 1];
+            });
+            event.sender.send("countRes", {
+                language: JSON.stringify(details)
+            });
         })
     })
 

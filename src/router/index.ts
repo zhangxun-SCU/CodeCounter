@@ -10,8 +10,18 @@ export const router = createRouter({
                 {
                     path: '/content',
                     name: 'content',
-                    component: () => import('@/layout/content/index.vue'),
+                    component: () => import('@/layout/content/index.vue')
                 },
+                {
+                    path: '/count',
+                    name: 'count',
+                    component: () => import('@/views/CountView.vue')
+                },
+                {
+                    path: '/setting',
+                    name: 'setting',
+                    component: () => import('@/views/CountAmountView.vue')
+                }
             ]
         },
         {

@@ -55,7 +55,8 @@ class CodeCounter {
                 totalLine: 0,
                 maxLine: 0,
                 minLine: Infinity,
-                funcNum: 0
+                funcNum: 0,
+                allFuncNums: [],
             };
             fs.readFile(filePath, (err, data) => {
                 if(err) reject(err);
@@ -69,6 +70,7 @@ class CodeCounter {
                     if(funcLine < funcOneFileDetail.minLine) funcOneFileDetail.minLine = funcLine;
                     if(type === 'cpp') this.lines.push(funcLine);
                     funcOneFileDetail.totalLine += funcLine;
+                    funcOneFileDetail.allFuncNums.push(funcLine);
                     result = reg.exec(codeStr);
                 }
                 resolve(funcOneFileDetail);
@@ -129,12 +131,14 @@ class CodeCounter {
                 if(funcDetail.funcNum <= 0) break;
 
                 this.details[language].funcNum += funcDetail.funcNum;  /* 函数个数 */
-                if(funcDetail.maxLine > this.details[language].maxFuncLength) {  /* 最大函数长度 */
-                    this.details[language].maxFuncLength = funcDetail.maxLine;
-                }
-                if(funcDetail.minLine < this.details[language].minFuncLength) {  /* 最小函数长度 */
-                    this.details[language].minFuncLength = funcDetail.maxLine;
-                }
+                // if(funcDetail.maxLine > this.details[language].maxFuncLength) {  /* 最大函数长度 */
+                //     this.details[language].maxFuncLength = funcDetail.maxLine;
+                // }
+                // if(funcDetail.minLine < this.details[language].minFuncLength) {  /* 最小函数长度 */
+                //     this.details[language].minFuncLength = funcDetail.maxLine;
+                // }
+                /* 所有个数 */
+                this.details[language].allFuncNums.push(...funcDetail.allFuncNums);
                 /* 平均函数长度 */
                 this.details[language].totalFuncLength += funcDetail.totalLine;
             }
