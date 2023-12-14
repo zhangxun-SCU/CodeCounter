@@ -1,30 +1,30 @@
 <script setup lang="ts">
 // import CodeCounterLogo from "@/components/core/CodeCounterLogo.vue";
 
-import { ref } from 'vue'
-import {
-  Document,
-  Menu as IconMenu,
-  Location,
-  Setting,
-} from '@element-plus/icons-vue'
+// import { ref } from 'vue'
+// import {
+//   Document,
+//   Menu as IconMenu,
+//   Location,
+//   Setting,
+// } from '@element-plus/icons-vue'
 import CountView from "@/views/CountView.vue";
-import SettingView from "@/views/SettingView.vue";
+// import SettingView from "@/views/SettingView.vue";
 
-const isCollapse = ref(true)
+// const isCollapse = ref(true)
 
-const changeCollapse = () => {
-  isCollapse.value = !isCollapse.value;
-};
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-}
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-}
-const handleSelect = (index, indexPath, item, routeResult) => {
-  console.log(index, indexPath, item, routeResult);
-}
+// const changeCollapse = () => {
+//   isCollapse.value = !isCollapse.value;
+// };
+// const handleOpen = (key: string, keyPath: string[]) => {
+//   console.log(key, keyPath);
+// }
+// const handleClose = (key: string, keyPath: string[]) => {
+//   console.log(key, keyPath);
+// }
+// const handleSelect = (index, indexPath, item, routeResult) => {
+//   console.log(index, indexPath, item, routeResult);
+// }
 
 
 </script>
@@ -32,10 +32,10 @@ const handleSelect = (index, indexPath, item, routeResult) => {
 <template>
   <div class="w-full flex-auto h-full">
     <el-tabs tab-position="left" class="tabs w-full h-full" type="border-card">
-      <el-tab-pane label="主页"></el-tab-pane>
+<!--      <el-tab-pane label="主页"></el-tab-pane>-->
       <el-tab-pane label="Count Code"><CountView/></el-tab-pane>
-      <el-tab-pane label="AI分析"></el-tab-pane>
-      <el-tab-pane label="setting"><SettingView/></el-tab-pane>
+<!--      <el-tab-pane label="AI分析"></el-tab-pane>-->
+<!--      <el-tab-pane label="setting"><SettingView/></el-tab-pane>-->
     </el-tabs>
 
 <!--    <el-menu-->

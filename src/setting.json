@@ -31,6 +31,18 @@
       "fileTypes": [
         "js", "ts"
       ]
+    },
+    "rust": {
+      "name": "rust",
+      "fileTypes": [
+        "rs"
+      ]
+    },
+    "Vue": {
+      "name": "Vue",
+      "fileTypes": [
+        "vue"
+      ]
     }
   },
   "countFuncNums": false

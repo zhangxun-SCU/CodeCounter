@@ -36,8 +36,9 @@ interface Details {
 interface CountInfo {
     paths: string[],
     excludeKeys: string[],
-    period: string,
-    languages: string[]
+    period: boolean,
+    languages: string[],
+    settings: object
 }
 
 /**

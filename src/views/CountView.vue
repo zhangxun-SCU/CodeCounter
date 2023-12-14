@@ -46,12 +46,14 @@ const handleInputConfirm = () => {
 
 let loading = ref(false);
 const sendCountInfo = (filePaths: string[], excludeKeys: string[]) => {
-  console.log(period.value, selectedLanguages.value);
+  console.log(period.value)
+  console.log(settings.languages)
   ipcRender.send("countInfo", JSON.stringify({
     paths:filePaths,
     excludeKeys: excludeKeys,
     period: period.value,
-    languages: selectedLanguages.value
+    languages: selectedLanguages.value,
+    settings: settings.languages,
   }));
   loading.value = true;
 }

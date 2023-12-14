@@ -36,6 +36,11 @@ export const ElectronBuildPlugin = (): Plugin => {
                     asar: true,
                     appId: 'com.xun.codecounter',
                     productName: 'codeCounter',
+                    extraResources: {
+                        from: "./src/setting.json",
+                        to: "../"
+                    },
+                    icon: "vite.svg",
                     nsis: {
                         oneClick: false,  // 取消一键安装
                         allowToChangeInstallationDirectory: true,  //允许用户选择安装目录

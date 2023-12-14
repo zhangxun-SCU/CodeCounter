@@ -3,7 +3,7 @@ import {onMounted} from "vue";
 import {useSettingStore} from "@/stores/setting.ts";
 const settingStore = useSettingStore();
 onMounted(async () => {
-  let settings = await import("@/setting.json");
+  let settings = await import("./setting.json");
   settingStore.languages = settings.languageSet;
   console.log(settingStore)
 })

@@ -33,7 +33,7 @@ ipcRender.on("exportRes", (event, args) => {
       <el-table-column prop="midFuncLength" label="midFuncLength"></el-table-column>
       <el-table-column prop="avrFuncLength" label="avrFuncLength">
         <template #default="scope">
-          <span>{{scope.row.avrFuncLength.toFixed(2)}}</span>
+          <span>{{scope.row.avrFuncLength}}</span>
         </template>
       </el-table-column>
 

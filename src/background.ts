@@ -10,9 +10,8 @@ import Details = Electron.Details;
 app.whenReady().then( ()=> {
     // 主窗口
     const win = new BrowserWindow({
-        height: 600,
-        width: 800,
-        fullscreen: true,
+        height: 800,
+        width: 1200,
         title: "CodeCounter-Xun",
         frame: false,  // 关闭默认标题栏
         // titleBarStyle: 'hidden',
@@ -23,13 +22,12 @@ app.whenReady().then( ()=> {
             webSecurity: false, // 关闭跨域检测,
         }
     });
-
-    win.webContents.openDevTools();  // 打开调试工具
     Menu.setApplicationMenu(null);  // 隐藏默认菜单栏
     if(process.argv[2]) {
+        win.webContents.openDevTools();  // 打开调试工具
         win.loadURL(process.argv[2]);
     } else {
-        win.loadURL('index.html');
+        win.loadFile('index.html')
     }
 
 
@@ -64,8 +62,9 @@ app.whenReady().then( ()=> {
     // 监听计数请求
     ipcMain.on("countInfo", (event, args) => {
         let info = JSON.parse(args)
+        event.sender.send("debugTest", new Date(info.period[0]))
         const counter: CodeCounter = new CodeCounter(info);
-        event.sender.send('debugTest', counter);
+        let time1 = new Date().getTime();
         counter.count().then(res => {
             const details: Details = JSON.parse(res.language);
             // for(let lang in details) {
@@ -81,6 +80,7 @@ app.whenReady().then( ()=> {
                 details[lang].minFuncLength = details[lang].allFuncNums[0];
                 details[lang].maxFuncLength = details[lang].allFuncNums[details[lang].funcNum - 1];
             });
+            event.sender.send("debugTest", (new Date().getTime() - time1))
             event.sender.send("countRes", {
                 language: JSON.stringify(details)
             });

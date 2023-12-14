@@ -8,9 +8,12 @@ import {Details} from "@/interface/lang.ts";
  * counter
  */
 class CodeCounter {
+    settings: object
     paths: string[]
     excludeKeys: string[]
-    period: string
+    period: boolean = false
+    startTime: Date | null = null
+    endTime: Date | null = null
     languages: string[]
     details: Details
     allTypes: string[] = []
@@ -19,9 +22,14 @@ class CodeCounter {
     constructor(countInfo: CountInfo) {
         this.paths = countInfo.paths;
         this.excludeKeys = countInfo.excludeKeys;
-        this.period = countInfo.period
+        if(countInfo.period) {
+            this.period = true;
+            this.startTime = new Date(countInfo.period[0]);
+            this.endTime = new Date(countInfo.period[0]);
+        }
         this.languages = countInfo.languages
-        this.details = getLanguageDetail(countInfo.languages);
+        this.settings = countInfo.settings
+        this.details = getLanguageDetail(countInfo.languages, this.settings);
         // 初始化所有需要统计的代码文件类型
         for(let key in this.details) {
             this.allTypes.push(...this.details[key].fileTypes)
@@ -47,9 +55,9 @@ class CodeCounter {
     // 对一个文件中的函数信息统计
     async countFuncNum(filePath: string, type: string):Promise<FuncDetail> {
         let reg: RegExp
-        if(type === 'c') reg = new RegExp(/\w+(\s+|\s*\*+\s*)\w+\s*\((\w+(\s+|\s*\*+\s*)\w+(\[])?\s*,?\s*)*\)\s*{/, 'g');
-        else if(type === 'cpp') reg = new RegExp(/\w+\s*(<.*>)?(\s+|\s*[*&]+\s*)(\w+(<.*>)?::)?\w+\s*\((\w+\s*(<.*>)?(\s+|\s*[*&]+\s*)\w+(\[])?\s*,?\s*)*\)\s*{/, 'g');
-        else if(type === 'java') reg = new RegExp(/\w+\s*(<.*>)?(\[])*\s+\w+\s*\((\w+\s*(<.*>)?(\[])*\s+\w+(\[])*\s*(,?)\s*)*\)[\s\n]*(.+)?\s*{/, 'g');
+        if(type === 'c') reg = new RegExp(/\w+(\s+|\s*\*+\s*)\w+\s*\((\s*\w+(\s+|\s*\*+\s*)\w+(\[])?\s*,?\s*)*\)\s*{/, 'g');
+        else if(type === 'cpp') reg = new RegExp(/\w+\s*(<.*>)?(\s+|\s*[*&]+\s*)(\w+(<.*>)?::)?\w+\s*\(*\)\s*{/, 'g');
+        else if(type === 'java') reg = new RegExp(/\w+\s*(<.*>)?(\[])*\s+\w+\s*\((\s*\w+\s*(<.*>)?(\[])*\s+\w+(\[])*\s*(,?)\s*)*\)[\s\n]*(.+)?\s*{/, 'g');
         return new Promise((resolve, reject) => {
             const funcOneFileDetail: FuncDetail = {
                 totalLine: 0,
@@ -68,7 +76,6 @@ class CodeCounter {
                     let funcLine = this.countFuncLines(codeStr.slice(result.index));
                     if(funcLine > funcOneFileDetail.maxLine) funcOneFileDetail.maxLine = funcLine;
                     if(funcLine < funcOneFileDetail.minLine) funcOneFileDetail.minLine = funcLine;
-                    if(type === 'cpp') this.lines.push(funcLine);
                     funcOneFileDetail.totalLine += funcLine;
                     funcOneFileDetail.allFuncNums.push(funcLine);
                     result = reg.exec(codeStr);
@@ -82,7 +89,9 @@ class CodeCounter {
         let lines: number = 0;
         let braceStack: string[] = [];
         let leftBrace: boolean = false;
-        let index = 0;
+        let index: number = 0;
+        // 对else if针对判断
+
         while(index < code.length && (!leftBrace || (leftBrace && braceStack.length !== 0))) {
             if (code[index] === '\n') ++lines;
             else if(code[index] === '{') {
@@ -105,20 +114,38 @@ class CodeCounter {
         for (const file of files) {
             const filePath = path.join(dirPath, file);
             const stat = fs.statSync(filePath);
-            if(this.isExclude(filePath)) continue;
-            if (stat.isDirectory()) {
-                await this.processDirectory(filePath);
-            } else {
-                let fileTypeArr = filePath.split('.');
-                const type = fileTypeArr[fileTypeArr.length - 1].toLowerCase();
-                let funcDetail: FuncDetail | null = null;
-                if(!this.allTypes.includes(type)) continue;
-                const linesInFile: any = await this.countOneFile(filePath);
-                if(this.funcNeedTypes.includes(type)) {
-                    funcDetail = await this.countFuncNum(filePath, type);
+            const fileCreateTime = stat.birthtime.getTime();
+            if (this.period && fileCreateTime <= this.endTime.getTime() && fileCreateTime >= this.startTime.getTime()) {
+                if (stat.isDirectory()) {
+                    await this.processDirectory(filePath);
+                } else {
+                    let fileTypeArr = filePath.split('.');
+                    const type = fileTypeArr[fileTypeArr.length - 1].toLowerCase();
+                    let funcDetail: FuncDetail | null = null;
+                    if(!this.allTypes.includes(type)) continue;
+                    const linesInFile: any = await this.countOneFile(filePath);
+                    if(this.funcNeedTypes.includes(type)) {
+                        funcDetail = await this.countFuncNum(filePath, type);
+                    }
+                    this.addCount(type, linesInFile, funcDetail);
                 }
-                this.addCount(type, linesInFile, funcDetail);
             }
+            if(!this.period) {
+                if (stat.isDirectory()) {
+                    await this.processDirectory(filePath);
+                } else {
+                    let fileTypeArr = filePath.split('.');
+                    const type = fileTypeArr[fileTypeArr.length - 1].toLowerCase();
+                    let funcDetail: FuncDetail | null = null;
+                    if(!this.allTypes.includes(type)) continue;
+                    const linesInFile: any = await this.countOneFile(filePath);
+                    if(this.funcNeedTypes.includes(type)) {
+                        funcDetail = await this.countFuncNum(filePath, type);
+                    }
+                    this.addCount(type, linesInFile, funcDetail);
+                }
+            }
+
         }
     }
 
@@ -129,14 +156,8 @@ class CodeCounter {
                 this.details[language].filesNum++;
                 if(funcDetail === null) break;
                 if(funcDetail.funcNum <= 0) break;
-
+                
                 this.details[language].funcNum += funcDetail.funcNum;  /* 函数个数 */
-                // if(funcDetail.maxLine > this.details[language].maxFuncLength) {  /* 最大函数长度 */
-                //     this.details[language].maxFuncLength = funcDetail.maxLine;
-                // }
-                // if(funcDetail.minLine < this.details[language].minFuncLength) {  /* 最小函数长度 */
-                //     this.details[language].minFuncLength = funcDetail.maxLine;
-                // }
                 /* 所有个数 */
                 this.details[language].allFuncNums.push(...funcDetail.allFuncNums);
                 /* 平均函数长度 */
