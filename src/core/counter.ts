@@ -113,16 +113,23 @@ class CodeCounter {
         const files = fs.readdirSync(dirPath);
         for (const file of files) {
             const filePath = path.join(dirPath, file);
+            if(this.isExclude(filePath)) continue;
             const stat = fs.statSync(filePath);
             const fileCreateTime = stat.birthtime.getTime();
-            if (this.period && fileCreateTime <= this.endTime.getTime() && fileCreateTime >= this.startTime.getTime()) {
-                if (stat.isDirectory()) {
-                    await this.processDirectory(filePath);
+            if (stat.isDirectory()) {
+                await this.processDirectory(filePath);
+            } else {
+                let fileTypeArr = filePath.split('.');
+                const type = fileTypeArr[fileTypeArr.length - 1].toLowerCase();
+                let funcDetail: FuncDetail | null = null;
+                if(!this.allTypes.includes(type)) continue;
+                if (this.period && fileCreateTime <= this.endTime.getTime() && fileCreateTime >= this.startTime.getTime()) {
+                    const linesInFile: any = await this.countOneFile(filePath);
+                    if(this.funcNeedTypes.includes(type)) {
+                        funcDetail = await this.countFuncNum(filePath, type);
+                    }
+                    this.addCount(type, linesInFile, funcDetail);
                 } else {
-                    let fileTypeArr = filePath.split('.');
-                    const type = fileTypeArr[fileTypeArr.length - 1].toLowerCase();
-                    let funcDetail: FuncDetail | null = null;
-                    if(!this.allTypes.includes(type)) continue;
                     const linesInFile: any = await this.countOneFile(filePath);
                     if(this.funcNeedTypes.includes(type)) {
                         funcDetail = await this.countFuncNum(filePath, type);
@@ -130,22 +137,6 @@ class CodeCounter {
                     this.addCount(type, linesInFile, funcDetail);
                 }
             }
-            if(!this.period) {
-                if (stat.isDirectory()) {
-                    await this.processDirectory(filePath);
-                } else {
-                    let fileTypeArr = filePath.split('.');
-                    const type = fileTypeArr[fileTypeArr.length - 1].toLowerCase();
-                    let funcDetail: FuncDetail | null = null;
-                    if(!this.allTypes.includes(type)) continue;
-                    const linesInFile: any = await this.countOneFile(filePath);
-                    if(this.funcNeedTypes.includes(type)) {
-                        funcDetail = await this.countFuncNum(filePath, type);
-                    }
-                    this.addCount(type, linesInFile, funcDetail);
-                }
-            }
-
         }
     }
 
